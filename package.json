@@ -2,13 +2,12 @@
   "name": "daily-diet-api",
   "version": "1.0.0",
   "author": "Rodrigo Aguiar",
-  "main": "src/index.js",
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "start": "node src/index.js",
-    "test": "node --test",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "dev": "tsx watch src/server.ts",
+    "knex": "node --import tsx ./node_modules/knex/bin/cli.js",
+    "lint": "eslint src --ext .ts --fix",
+    "build": "tsup src --out-dir build",
+    "test": "vitest --run"
   },
   "dependencies": {
     "@fastify/cookie": "^9.2.0",
@@ -20,6 +19,7 @@
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.10.4",
     "@types/supertest": "^2.0.12",
     "eslint": "^9.39.4",
