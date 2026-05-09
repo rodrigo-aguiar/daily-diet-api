@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "daily-diet-api"
+  type: workspace
+
+collections:
+  - name: "Create User"
+    path: "collections/Create User"
+
+specs:
+
+docs: ''

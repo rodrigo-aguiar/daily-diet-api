@@ -1,0 +1,22 @@
+info:
+  name: create
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:3333/users
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Teste 01",
+        "email": "test@example.test"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
