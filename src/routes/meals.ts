@@ -5,6 +5,23 @@ import { knex } from '../database';
 import { checkSessionId } from '../middlewares/check-session-id';
 
 export async function mealsRoutes(app: FastifyInstance) {
+  app.get('/', { preHandler: [checkSessionId] }, async (request, reply) => {
+    try {
+      const meals = await knex('meals')
+        .where({ user_id: request.user?.id })
+        .orderBy('date', 'desc')
+
+      return reply.status(200).send({ meals });
+    } catch (error) {
+      return reply.status(500).send({
+        error: {
+          message: 'Internal server error',
+          details: error,
+        }
+      });
+    }
+  })
+
   app.post('/', { preHandler: [checkSessionId] }, async (request, reply) => {
     if (!request.body) {
       return reply.status(400).send({

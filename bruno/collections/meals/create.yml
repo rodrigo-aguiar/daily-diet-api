@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "name": "Test",
-        "description": "Test",
+        "name": "Test 2",
+        "description": "Test 2",
         "isOnDiet": true,
         "date": "2026-05-08"
       }
