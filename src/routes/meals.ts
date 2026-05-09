@@ -22,6 +22,30 @@ export async function mealsRoutes(app: FastifyInstance) {
     }
   })
 
+  app.get('/:id', { preHandler: [checkSessionId] }, async (request, reply) => {
+    const getMealParamsSchema = z.object({
+      id: z.string().uuid(),
+    });
+
+    try {
+      const { id } = getMealParamsSchema.parse(request.params);
+
+      const meal = await knex('meals')
+        .where({ user_id: request.user?.id })
+        .andWhere({ id })
+        .first()
+
+      return reply.status(200).send({ meal });
+    } catch (error) {
+      return reply.status(500).send({
+        error: {
+          message: 'Internal server error',
+          details: error,
+        }
+      });
+    }
+  })
+
   app.post('/', { preHandler: [checkSessionId] }, async (request, reply) => {
     if (!request.body) {
       return reply.status(400).send({
