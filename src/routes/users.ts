@@ -6,12 +6,10 @@ import { knex } from '../database';
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/', async (request, reply) => {
     if (!request.body) {
-      reply.status(201).send({
-        result: {
-          error: {
-            message: 'Request body is missing'
-          },
-        }
+      return reply.status(400).send({
+        error: {
+          message: 'Request body is missing'
+        },
       });
     }
 
@@ -23,6 +21,16 @@ export async function usersRoutes(app: FastifyInstance) {
     try {
       const { name, email } = createUserSchema.parse(request.body);
 
+      const userByEmail = await knex('users').where({ email }).first()
+
+      if (userByEmail) {
+        return reply.status(400).send({
+          error: {
+            message: 'User already exists'
+          }
+        });
+      }
+
       let sessionId = request.cookies.sessionId
 
       if (!sessionId) {
@@ -32,28 +40,37 @@ export async function usersRoutes(app: FastifyInstance) {
           path: '/',
           maxAge: 60 * 60 * 24 * 7, // 7 days
         })
+      } else {
+        return reply.status(401).send({ error: 'User already has a session' })
       }
 
-      const user = {
+      const newUser = {
         id: randomUUID(),
         name,
-        email
+        email,
       };
 
-      await knex('users').insert(user);
+      const databaseResult = await knex('users').insert({ ...newUser, session_id: sessionId});
 
-      reply.status(201).send({ result: { user } });
+      console.log('Database result:', databaseResult);
+
+      return reply.status(201).send(newUser);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        reply.status(400).send({
-          result: {
-            error: {
-              message: 'Invalid request body',
-              details: error.errors,
-            },
+        return reply.status(400).send({
+          error: {
+            message: 'Invalid request body',
+            details: error.errors,
           }
         });
       }
+
+      return reply.status(500).send({
+        error: {
+          message: 'Internal server error',
+          details: error,
+        }
+      });
     }
   })
 }
