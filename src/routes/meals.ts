@@ -46,6 +46,37 @@ export async function mealsRoutes(app: FastifyInstance) {
     }
   })
 
+  app.get('/metrics', { preHandler: [checkSessionId] }, async (request, reply) => {
+    try {
+      const allMeals = await knex('meals')
+        .where({ user_id: request.user?.id })
+
+      const totalMeals = allMeals.length;
+      const totalMealsOnDiet = allMeals.filter(meal => meal.is_on_diet).length;
+      const totalMealsOffDiet = totalMeals - totalMealsOnDiet;
+      const bestOnDietSequence = allMeals.reduce((best, meal) => {
+        if (meal.is_on_diet) {
+          return best + 1;
+        }
+        return 0;
+      }, 0);
+      
+      return reply.status(200).send({ 
+        totalMeals,
+        totalMealsOnDiet,
+        totalMealsOffDiet,
+        bestOnDietSequence,
+       });
+    } catch (error) {
+      return reply.status(500).send({
+        error: {
+          message: 'Internal server error',
+          details: error,
+        }
+      });
+    }
+  })
+
   app.post('/', { preHandler: [checkSessionId] }, async (request, reply) => {
     if (!request.body) {
       return reply.status(400).send({
