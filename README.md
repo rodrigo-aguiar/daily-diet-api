@@ -14,7 +14,7 @@ Solução do desafio 02 da Formação de Node.js da Rocketseat
   - Descrição
   - Data e Hora
   - Está dentro ou não da dieta
-- [ ] Deve ser possível listar todas as refeições de um usuário
+- [X] Deve ser possível listar todas as refeições de um usuário
 - [ ] Deve ser possível visualizar uma única refeição
 - [ ] Deve ser possível editar uma refeição, podendo alterar todos os dados acima
 - [ ] Deve ser possível apagar uma refeição
