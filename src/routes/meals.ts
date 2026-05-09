@@ -153,4 +153,27 @@ export async function mealsRoutes(app: FastifyInstance) {
       });
     }
   })
+
+  app.delete('/:id', { preHandler: [checkSessionId] }, async (request, reply) => {
+    const deleteMealParamsSchema = z.object({
+      id: z.string().uuid(),
+    });
+
+    try {
+      const { id } = deleteMealParamsSchema.parse(request.params);
+
+      await knex('meals')
+        .where({ id })
+        .delete();
+
+      return reply.status(204).send();
+    } catch (error) {
+      return reply.status(500).send({
+        error: {
+          message: 'Internal server error',
+          details: error,
+        }
+      });
+    }
+  })
 }

@@ -1,0 +1,15 @@
+info:
+  name: delete
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: http://localhost:3333/meals/6b23ffef-f4fc-4123-93ca-aabc3bb2e67d
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
