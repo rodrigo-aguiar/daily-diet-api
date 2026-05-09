@@ -6,6 +6,8 @@ info:
 collections:
   - name: "Create User"
     path: "collections/Create User"
+  - name: "meals"
+    path: "collections/meals"
 
 specs:
 
