@@ -50,9 +50,7 @@ export async function usersRoutes(app: FastifyInstance) {
         email,
       };
 
-      const databaseResult = await knex('users').insert({ ...newUser, session_id: sessionId});
-
-      console.log('Database result:', databaseResult);
+      await knex('users').insert({ ...newUser, session_id: sessionId});
 
       return reply.status(201).send(newUser);
     } catch (error) {
