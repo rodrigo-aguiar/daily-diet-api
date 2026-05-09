@@ -1,0 +1,24 @@
+info:
+  name: save
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: http://localhost:3333/meals/6b23ffef-f4fc-4123-93ca-aabc3bb2e67d
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Test 3",
+        "description": "Test 3",
+        "isOnDiet": true,
+        "date": "2026-05-08"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

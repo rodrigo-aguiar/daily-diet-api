@@ -102,4 +102,55 @@ export async function mealsRoutes(app: FastifyInstance) {
       });
     }
   })
+
+  app.put('/:id', { preHandler: [checkSessionId] }, async (request, reply) => {
+    if (!request.body) {
+      return reply.status(400).send({
+        error: {
+          message: 'Request body is missing'
+        },
+      });
+    }
+
+    const getMealParamsSchema = z.object({
+      id: z.string().uuid(),
+    });
+
+    const createMealSchema = z.object({
+      name: z.string(),
+      description: z.string(),
+      isOnDiet: z.boolean(),
+      date: z.coerce.date(),
+    });
+
+    try {
+      const { id } = getMealParamsSchema.parse(request.params);
+      const { name, description, isOnDiet, date } = createMealSchema.parse(request.body);
+
+      await knex('meals').where({ id }).update({
+        name,
+        description,
+        is_on_diet: isOnDiet,
+        date,
+      });
+
+      return reply.status(204).send();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return reply.status(400).send({
+          error: {
+            message: 'Invalid request body',
+            details: error.errors,
+          }
+        });
+      }
+
+      return reply.status(500).send({
+        error: {
+          message: 'Internal server error',
+          details: error,
+        }
+      });
+    }
+  })
 }
