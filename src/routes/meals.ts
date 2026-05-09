@@ -2,21 +2,10 @@ import { randomUUID } from 'node:crypto'
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { knex } from '../database';
+import { checkSessionId } from '../middlewares/check-session-id';
 
 export async function mealsRoutes(app: FastifyInstance) {
-  app.post('/', async (request, reply) => {
-    const sessionId = request.cookies.sessionId
-
-    if (!sessionId) {
-      return reply.status(401).send({ error: 'Unauthorized' })
-    }
-
-    const user = await knex('users').where({ session_id: sessionId }).first()
-
-    if (!user) {
-      return reply.status(401).send({ error: 'Unauthorized' })
-    }
-    
+  app.post('/', { preHandler: [checkSessionId] }, async (request, reply) => {
     if (!request.body) {
       return reply.status(400).send({
         error: {
@@ -41,7 +30,7 @@ export async function mealsRoutes(app: FastifyInstance) {
         description,
         isOnDiet,
         date,
-        userId: user.id,
+        userId: request.user?.id,
       };
 
       await knex('meals').insert({
