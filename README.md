@@ -18,12 +18,12 @@ Solução do desafio 02 da Formação de Node.js da Rocketseat
 - [X] Deve ser possível visualizar uma única refeição
 - [X] Deve ser possível editar uma refeição, podendo alterar todos os dados acima
 - [X] Deve ser possível apagar uma refeição
-- [ ] Deve ser possível recuperar as métricas de um usuário
-  - [ ] Quantidade total de refeições registradas
-  - [ ] Quantidade total de refeições dentro da dieta
-  - [ ] Quantidade total de refeições fora da dieta
-  - [ ] Melhor sequência de refeições dentro da dieta
-- [ ] O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
+- [X] Deve ser possível recuperar as métricas de um usuário
+  - [X] Quantidade total de refeições registradas
+  - [X] Quantidade total de refeições dentro da dieta
+  - [X] Quantidade total de refeições fora da dieta
+  - [X] Melhor sequência de refeições dentro da dieta
+- [X] O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
 
 ## Scripts
 
@@ -32,15 +32,3 @@ Solução do desafio 02 da Formação de Node.js da Rocketseat
 - `npm test`: run tests with Node test runner
 - `npm run lint`: check code style with ESLint
 - `npm run lint:fix`: auto-fix lint issues when possible
-
-## Project structure
-
-```
-.
-├── src/
-│   └── index.js
-├── test/
-│   └── health.test.js
-├── .gitignore
-└── package.json
-```
